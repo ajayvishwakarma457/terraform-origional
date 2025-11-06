@@ -1,0 +1,14 @@
+terraform init   
+terraform init -upgrade
+terraform apply
+terraform fmt  
+terraform validate
+terraform plan -out=tfplan
+terraform apply tfplan
+terraform output rds_endpoint
+terraform plan -lock=false
+terraform init -reconfigure
+terraform apply -auto-approve
+
+
+
