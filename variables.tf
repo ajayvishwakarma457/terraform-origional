@@ -59,14 +59,14 @@ variable "alert_email" {
   default     = "" # set to "you@example.com" to auto-subscribe
 }
 
-variable "redis_auth_token" {
-  description = "Redis auth token (do not commit to Git)"
-  type        = string
-  sensitive   = true
-}
+# variable "redis_auth_token" {
+#   description = "Redis auth token (do not commit to Git)"
+#   type        = string
+#   sensitive   = true
+# }
 
-variable "domain_name" {
-  description = "Root domain name for Route 53 and ACM (e.g., spakcommgroup.com)"
-  type        = string
-}
+# variable "domain_name" {
+#   description = "Root domain name for Route 53 and ACM (e.g., spakcommgroup.com)"
+#   type        = string
+# }
 

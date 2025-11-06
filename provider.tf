@@ -8,13 +8,14 @@ terraform {
     }
   }
 
-  backend "s3" {
-    bucket         = "tanvora-terraform-state" # <-- create this S3 bucket manually first
-    key            = "infra/terraform.tfstate" # <-- state file path in bucket
-    region         = "ap-south-1"              # <-- same as your region
-    dynamodb_table = "tanvora-terraform-lock"  # <-- create DynamoDB table manually first
-    encrypt        = true
-  }
+  # backend "s3" {
+  #   bucket         = "tanvora-terraform-state-ajay"
+  #   key            = "infra/terraform.tfstate"
+  #   region         = "ap-south-1"
+  #   dynamodb_table = "tanvora-terraform-lock"
+  #   encrypt        = true
+  # }
+
 }
 
 provider "aws" {

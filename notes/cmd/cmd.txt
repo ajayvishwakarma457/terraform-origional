@@ -9,6 +9,7 @@ terraform output rds_endpoint
 terraform plan -lock=false
 terraform init -reconfigure
 terraform apply -auto-approve
+terraform state list
 
 
 
