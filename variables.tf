@@ -65,8 +65,8 @@ variable "alert_email" {
 #   sensitive   = true
 # }
 
-# variable "domain_name" {
-#   description = "Root domain name for Route 53 and ACM (e.g., spakcommgroup.com)"
-#   type        = string
-# }
+variable "domain_name" {
+  description = "Root domain name for Route 53 and ACM (e.g., spakcommgroup.com)"
+  type        = string
+}
 
