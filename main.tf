@@ -58,3 +58,16 @@ module "elasticache" {
   # private_cidr_blocks = [var.private_subnet_cidr_a, var.private_subnet_cidr_b]
   private_cidr_blocks = var.private_subnet_cidrs
 }
+
+module "dynamodb" {
+  source       = "./modules/dynamodb"
+  project_name = var.project_name
+  common_tags  = var.common_tags
+
+  table_name    = "tanvora-users"
+  hash_key      = "userId"
+  hash_key_type = "S"
+  sort_key      = "createdAt"
+  sort_key_type = "S"
+}
+
