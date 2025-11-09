@@ -10,6 +10,7 @@ terraform plan -lock=false
 terraform init -reconfigure
 terraform apply -auto-approve
 terraform state list
-
+terraform force-unlock <ID>
+terraform output
 
 
