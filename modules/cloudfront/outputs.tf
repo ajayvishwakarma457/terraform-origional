@@ -23,3 +23,9 @@ output "acm_dns_validation_records" {
   description = "CNAME records required for ACM validation when not auto-created"
   value       = var.domain_name != "" && var.route53_zone_id == "" ? aws_acm_certificate.cert[0].domain_validation_options : []
 }
+
+output "cloudfront_hosted_zone_id" {
+  value       = aws_cloudfront_distribution.this.hosted_zone_id
+  description = "CloudFront Hosted Zone ID"
+}
+
