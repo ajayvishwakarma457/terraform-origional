@@ -9,7 +9,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "tanvora-terraform-state-ajay"
+    bucket         = "tanvora-terraform-state-001"
     key            = "infra/terraform.tfstate"
     region         = "ap-south-1"
     dynamodb_table = "tanvora-terraform-lock"

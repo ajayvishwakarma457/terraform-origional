@@ -4,11 +4,11 @@
 # 1️⃣ Create S3 bucket for Terraform state
 # ----------------------------
 resource "aws_s3_bucket" "terraform_state" {
-  bucket        = "tanvora-terraform-state-ajay"
+  bucket        = "tanvora-terraform-state-001"
   force_destroy = true
 
   tags = {
-    Name = "tanvora-terraform-state-ajay"
+    Name = "tanvora-terraform-state-001"
     Environment = "infra"
   }
 }

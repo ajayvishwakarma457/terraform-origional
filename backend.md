@@ -6,11 +6,11 @@
 🪣 1️⃣ S3 Bucket — Store Terraform State
 
   resource "aws_s3_bucket" "terraform_state" {
-    bucket        = "tanvora-terraform-state-ajay"
+    bucket        = "tanvora-terraform-state-001"
     force_destroy = true
 
     tags = {
-      Name = "tanvora-terraform-state-ajay"
+      Name = "tanvora-terraform-state-001"
       Environment = "infra"
     }
   }
@@ -101,7 +101,7 @@
 
     terraform {
       backend "s3" {
-        bucket         = "tanvora-terraform-state-ajay"
+        bucket         = "tanvora-terraform-state-001"
         key            = "infra/terraform.tfstate"
         region         = "ap-south-1"
         dynamodb_table = "tanvora-terraform-lock"
