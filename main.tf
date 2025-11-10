@@ -1,4 +1,13 @@
 
+module "acm" {
+  source          = "./modules/acm"
+  aws_region      = var.aws_region
+  project_name    = var.project_name
+  domain_name     = var.domain_name
+  route53_zone_id = module.route53.route53_zone_id
+  common_tags     = var.common_tags
+}
+
 module "vpc" {
   source = "./modules/vpc"
 
@@ -153,5 +162,45 @@ module "ec2" {
   ec2_role_name      = module.iam.ec2_role_name
 }
 
+module "scaling" {
+  source = "./modules/scaling"
 
+  project_name       = var.project_name
+  common_tags        = var.common_tags
+  vpc_id             = module.vpc.vpc_id
+  public_subnet_ids  = module.vpc.public_subnet_ids
+  private_subnet_ids = module.vpc.private_subnet_ids
+
+  instance_type              = "t3.micro"
+  iam_instance_profile_name   = "${var.project_name}-ec2-profile"
+
+  desired_capacity = 2
+  min_size         = 2
+  max_size         = 4
+
+  health_check_path  = "/"
+  alb_certificate_arn = module.acm.alb_cert_arn
+
+  # 👇 Add these two lines
+  alb_sg_id = module.web_sg.security_group_id
+  app_sg_id = module.app_sg.security_group_id
+}
+
+module "route53" {
+  source       = "./modules/route53"
+  project_name = var.project_name
+  domain_name  = "spakcommgroup.com"
+  common_tags  = var.common_tags
+
+  alb_dns_name = module.scaling.alb_dns_name
+  alb_zone_id  = module.scaling.alb_zone_id
+
+  cloudfront_domain_name    = module.cloudfront.cloudfront_domain_name
+  cloudfront_hosted_zone_id = "Z2FDTNDATAQYW2" # always same for CloudFront globally
+
+  # Optional: if you also have api subdomain
+  create_api_record = true
+  api_dns_name      = module.scaling.alb_dns_name
+  api_zone_id       = module.scaling.alb_zone_id
+}
 

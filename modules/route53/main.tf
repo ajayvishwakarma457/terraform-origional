@@ -75,14 +75,22 @@ resource "aws_route53_record" "api_alias" {
 # --------------------------------------------------
 
 # Lookup the hosted zone
-data "aws_route53_zone" "primary" {
-  name         = "spakcommgroup.com."
-  private_zone = false
+# data "aws_route53_zone" "primary" {
+#   name         = "spakcommgroup.com"
+#   private_zone = false
+# }
+
+resource "aws_route53_zone" "primary" {
+  name = "spakcommgroup.com"
+  tags = merge(var.common_tags, {
+    Name = "${var.project_name}-hosted-zone"
+  })
 }
 
 # Create an Alias record for the ALB
 resource "aws_route53_record" "app_alias" {
-  zone_id = data.aws_route53_zone.primary.zone_id
+  # zone_id = data.aws_route53_zone.primary.zone_id
+  zone_id = aws_route53_zone.primary.zone_id
   name    = "app.spakcommgroup.com"  # Subdomain for your app
   type    = "A"
 
@@ -90,7 +98,8 @@ resource "aws_route53_record" "app_alias" {
     # name                   = module.scaling.alb_dns_name   # from scaling module
     # zone_id                = module.scaling.alb_zone_id    # from scaling module
     name  = var.alb_dns_name
-    zone_id = var.alb_zone_id
+    # zone_id = var.alb_zone_id
+    zone_id = aws_route53_zone.primary.zone_id
     evaluate_target_health = true
   }
 
