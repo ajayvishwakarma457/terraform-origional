@@ -142,3 +142,16 @@ module "cloudfront" {
   # route53_zone_id = "Z123456ABCDEFG"
 }
 
+# MACHINE IN PRIVATE SUBNET
+module "ec2" {
+  source             = "./modules/ec2"
+  project_name       = var.project_name
+  common_tags        = var.common_tags
+  vpc_id             = module.vpc.vpc_id
+  vpc_cidr           = var.vpc_cidr
+  private_subnet_ids = module.vpc.private_subnet_ids
+  ec2_role_name      = module.iam.ec2_role_name
+}
+
+
+
