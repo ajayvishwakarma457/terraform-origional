@@ -161,22 +161,22 @@ module "dynamodb" {
 #   alb_certificate_arn = module.acm.alb_cert_arn
 # }
 
-# module "cloudfront" {
-#   source       = "./modules/cloudfront"
-#   project_name = var.project_name
-#   aws_region   = var.aws_region
-#   common_tags  = var.common_tags
+module "cloudfront" {
+  source       = "./modules/cloudfront"
+  project_name = var.project_name
+  aws_region   = var.aws_region
+  common_tags  = var.common_tags
 
-#   # optional: set if you want a specific name
-#   # bucket_name = "tanvora-cdn-static"
+  # optional: set if you want a specific name
+  # bucket_name = "tanvora-cdn-static"
 
-#   # custom domain (optional)
-#   # domain_name     = "cdn.tanvora.com"
-#   # alternate_names = ["static.tanvora.com"]
+  # custom domain (optional)
+  # domain_name     = "cdn.tanvora.com"
+  # alternate_names = ["static.tanvora.com"]
 
-#   # If you want the module to also create the ACM DNS validation records:
-#   # route53_zone_id = "Z123456ABCDEFG"
-# }
+  # If you want the module to also create the ACM DNS validation records:
+  # route53_zone_id = "Z123456ABCDEFG"
+}
 
 # module "route53" {
 #   source       = "./modules/route53"
