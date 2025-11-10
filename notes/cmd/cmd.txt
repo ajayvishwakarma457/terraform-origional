@@ -13,7 +13,9 @@ terraform state list
 terraform force-unlock <ID>
 terraform output
 terraform refresh
-
+terraform destroy -target=module.cloudfront
+terraform state rm module.cloudfront
+terraform state list | grep cloudfront
 
 rm -rf .terraform
 rm .terraform.lock.hcl

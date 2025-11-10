@@ -2,26 +2,6 @@
 # CloudFront + S3 + (ACM)
 #############################
 
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
-
-# Default provider = your workload region (for S3)
-provider "aws" {
-  region = var.aws_region
-}
-
-# CloudFront requires ACM cert in us-east-1
-provider "aws" {
-  alias  = "us_east_1"
-  region = "us-east-1"
-}
-
 #############################
 # S3 Bucket for Static Assets
 #############################
@@ -51,7 +31,7 @@ resource "aws_s3_bucket_public_access_block" "cdn_pab" {
   restrict_public_buckets = true
 }
 
-# (Optional) Simple index.html so you can test immediately
+# Optional test index.html
 resource "aws_s3_object" "index_html" {
   count        = var.create_test_index ? 1 : 0
   bucket       = aws_s3_bucket.cdn_bucket.id
@@ -64,7 +44,6 @@ resource "aws_s3_object" "index_html" {
 # ACM (Optional) – us-east-1
 #############################
 
-# Only create cert if a domain is provided
 resource "aws_acm_certificate" "cert" {
   provider          = aws.us_east_1
   count             = var.domain_name != "" ? 1 : 0
@@ -74,7 +53,6 @@ resource "aws_acm_certificate" "cert" {
   tags = merge(var.common_tags, { Name = "${var.project_name}-cdn-cert" })
 }
 
-# Create DNS validation records if a hosted zone is provided
 resource "aws_route53_record" "cert_validation" {
   count   = var.domain_name != "" && var.route53_zone_id != "" ? length(aws_acm_certificate.cert[0].domain_validation_options) : 0
   zone_id = var.route53_zone_id
@@ -119,7 +97,6 @@ resource "aws_cloudfront_distribution" "cdn" {
   origin {
     domain_name = aws_s3_bucket.cdn_bucket.bucket_regional_domain_name
     origin_id   = "s3-origin-${aws_s3_bucket.cdn_bucket.id}"
-
     origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
   }
 
@@ -128,22 +105,16 @@ resource "aws_cloudfront_distribution" "cdn" {
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     cached_methods         = ["GET", "HEAD"]
-
-    compress = true
-
-    # Use AWS managed cache/req policies or make variables if you want custom
-    cache_policy_id            = var.cache_policy_id != "" ? var.cache_policy_id : "658327ea-f89d-4fab-a63d-7e88639e58f6" # Managed-CachingOptimized
-    origin_request_policy_id   = var.origin_request_policy_id != "" ? var.origin_request_policy_id : "88a5eaf4-2fd4-4709-b370-b4c650ea3fcf" # Managed-CORS-S3Origin
+    compress               = true
+    cache_policy_id            = var.cache_policy_id != "" ? var.cache_policy_id : "658327ea-f89d-4fab-a63d-7e88639e58f6"
+    origin_request_policy_id   = var.origin_request_policy_id != "" ? var.origin_request_policy_id : "88a5eaf4-2fd4-4709-b370-b4c650ea3fcf"
     response_headers_policy_id = var.response_headers_policy_id != "" ? var.response_headers_policy_id : null
   }
 
   restrictions {
-    geo_restriction {
-      restriction_type = "none"
-    }
+    geo_restriction { restriction_type = "none" }
   }
 
-  # Viewer cert
   viewer_certificate {
     acm_certificate_arn            = local.use_custom_cert ? aws_acm_certificate.cert[0].arn : null
     ssl_support_method             = local.use_custom_cert ? "sni-only" : null
@@ -166,7 +137,6 @@ resource "aws_cloudfront_distribution" "cdn" {
 
 data "aws_caller_identity" "current" {}
 
-# Allow CloudFront distribution to read from the bucket using OAC
 resource "aws_s3_bucket_policy" "cdn_bucket_policy" {
   bucket = aws_s3_bucket.cdn_bucket.id
   policy = jsonencode({
@@ -187,5 +157,3 @@ resource "aws_s3_bucket_policy" "cdn_bucket_policy" {
     ]
   })
 }
-
-

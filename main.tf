@@ -130,14 +130,15 @@ module "cloudfront" {
   aws_region   = var.aws_region
   common_tags  = var.common_tags
 
-  # optional: set if you want a specific name
+  providers = {
+    aws           = aws
+    aws.us_east_1 = aws.us_east_1
+  }
+
+  # Optional overrides
   # bucket_name = "tanvora-cdn-static"
-
-  # custom domain (optional)
-  # domain_name     = "cdn.tanvora.com"
+  # domain_name = "cdn.tanvora.com"
   # alternate_names = ["static.tanvora.com"]
-
-  # If you want the module to also create the ACM DNS validation records:
   # route53_zone_id = "Z123456ABCDEFG"
 }
 
