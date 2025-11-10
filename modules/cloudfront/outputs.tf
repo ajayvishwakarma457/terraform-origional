@@ -25,7 +25,7 @@ output "acm_dns_validation_records" {
 }
 
 output "cloudfront_hosted_zone_id" {
-  value       = aws_cloudfront_distribution.this.hosted_zone_id
+  value       = aws_cloudfront_distribution.cdn.hosted_zone_id
   description = "CloudFront Hosted Zone ID"
 }
 

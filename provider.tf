@@ -8,13 +8,13 @@ terraform {
     }
   }
 
-  # backend "s3" {
-  #   bucket         = "tanvora-terraform-state-ajay"
-  #   key            = "infra/terraform.tfstate"
-  #   region         = "ap-south-1"
-  #   dynamodb_table = "tanvora-terraform-lock"
-  #   encrypt        = true
-  # }
+  backend "s3" {
+    bucket         = "tanvora-terraform-state-ajay"
+    key            = "infra/terraform.tfstate"
+    region         = "ap-south-1"
+    dynamodb_table = "tanvora-terraform-lock"
+    encrypt        = true
+  }
 
 }
 
