@@ -1,6 +1,4 @@
 
-
-
 module "vpc" {
   source = "./modules/vpc"
 
@@ -125,8 +123,6 @@ module "dynamodb" {
   sort_key      = "createdAt"
   sort_key_type = "S"
 }
-
-
 
 module "cloudfront" {
   source       = "./modules/cloudfront"
