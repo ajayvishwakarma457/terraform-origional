@@ -249,6 +249,17 @@ module "eks" {
   subnet_ids   = module.vpc.private_subnet_ids
 }
 
+module "lambda" {
+  source       = "./modules/lambda"
+  project_name = var.project_name
+  common_tags  = var.common_tags
+  runtime      = "python3.11"
+  handler      = "lambda_function.lambda_handler"
+  filename     = "${path.module}/lambda_function.zip"
+  environment  = {
+    ENVIRONMENT = "dev"
+  }
+}
 
 
 
