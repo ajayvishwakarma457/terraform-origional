@@ -204,3 +204,14 @@ module "route53" {
   api_zone_id       = module.scaling.alb_zone_id
 }
 
+module "lightsail" {
+  source            = "./modules/lightsail"
+  project_name      = var.project_name
+  common_tags       = var.common_tags
+  availability_zone = "ap-south-1a"
+  blueprint_id      = "ubuntu_22_04"
+  bundle_id         = "micro_3_1"
+}
+
+
+
