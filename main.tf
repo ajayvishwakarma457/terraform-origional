@@ -242,6 +242,13 @@ module "ecs" {
   security_group_id = module.app_sg.security_group_id
 }
 
+module "eks" {
+  source       = "./modules/eks"
+  project_name = var.project_name
+  common_tags  = var.common_tags
+  subnet_ids   = module.vpc.private_subnet_ids
+}
+
 
 
 
