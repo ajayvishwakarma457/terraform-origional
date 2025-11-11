@@ -219,17 +219,29 @@ module "ecr" {
   common_tags  = var.common_tags
 }
 
-module "apprunner" {
-  source       = "./modules/apprunner"
-  project_name = var.project_name
-  common_tags  = var.common_tags
-  service_name = "tanvora-apprunner"
-  image_uri    = "${module.ecr.repository_url}:latest"  # uses the ECR module output
-  port         = 3000
-  environment  = {
-    NODE_ENV = "production"
-  }
+## For this we required image in the ecr service 
+# module "apprunner" {
+#   source       = "./modules/apprunner"
+#   project_name = var.project_name
+#   common_tags  = var.common_tags
+#   service_name = "tanvora-apprunner"
+#   image_uri    = "${module.ecr.repository_url}:latest"  # uses the ECR module output
+#   port         = 3000
+#   environment  = {
+#     NODE_ENV = "production"
+#   }
+# }
+
+module "ecs" {
+  source            = "./modules/ecs"
+  project_name      = var.project_name
+  common_tags       = var.common_tags
+  image_uri         = "${module.ecr.repository_url}:latest"
+  container_port    = 80
+  private_subnets   = module.vpc.public_subnet_ids
+  security_group_id = module.app_sg.security_group_id
 }
+
 
 
 
