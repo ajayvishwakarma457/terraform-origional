@@ -1,0 +1,14 @@
+
+
+
+| Area                                   | Example Advanced Step                                                 |
+| -------------------------------------- | --------------------------------------------------------------------- |
+| **Automation / CI/CD**                 | Terraform Cloud, GitHub Actions, or CodePipeline integration          |
+| **Networking Enhancements**            | NAT gateways, Transit Gateways, multi-region VPC peering              |
+| **Security / Governance**              | IAM least-privilege policies, CloudTrail, Config Rules, GuardDuty     |
+| **Monitoring / Logging**               | Centralized CloudWatch, FluentBit, Prometheus/Grafana, AWS OpenSearch |
+| **Scalability**                        | Auto Scaling groups, ALB target groups for ECS/EKS                    |
+| **Cost & Environment Segregation**     | Dev/Staging/Prod workspaces, tagging strategies                       |
+| **Secrets Management**                 | SSM Parameter Store / Secrets Manager integration                     |
+| **Service Mesh / Deployment Strategy** | EKS + Istio / ECS Blue-Green deployments                              |
+| **Serverless integration**             | EventBridge → Lambda pipelines, SQS/SNS triggers                      |
